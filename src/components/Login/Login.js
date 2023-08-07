@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 
 import Card from "../UI/Card/Card";
 import classes from "./Login.module.css";
 import Button from "../UI/Button/Button";
+import AuthContext from "../../store/auth-context";
 
-const Login = (props) => {
+const Login = () => {
   const [enteredEmail, setEnteredEmail] = useState("");
   const [emailIsValid, setEmailIsValid] = useState();
   const [enteredPassword, setEnteredPassword] = useState("");
@@ -18,6 +19,9 @@ const Login = (props) => {
   const collegeNameHandler = (event) => {
     setCollegeName(event.target.value);
   };
+
+  // call useContext
+  const ctxt=useContext(AuthContext);
 
   // Using useEffrct
   useEffect(() => {
@@ -58,7 +62,7 @@ const Login = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    props.onLogin(enteredEmail, enteredPassword);
+    ctxt.onLogin(enteredEmail, enteredPassword);
   };
 
   return (
