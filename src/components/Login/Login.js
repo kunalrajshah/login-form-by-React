@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 
 import Card from "../UI/Card/Card";
 import classes from "./Login.module.css";
@@ -15,14 +15,18 @@ const Login = () => {
 
   // For college
   const [enteredCollegeName, setCollegeName] = useState("");
-  const [collegeIsValid,setCollegeIsValid]=useState();
+  const [collegeIsValid, setCollegeIsValid] = useState();
 
   const collegeNameHandler = (event) => {
     setCollegeName(event.target.value);
   };
 
   // call useContext
-  const ctxt=useContext(AuthContext);
+  const ctxt = useContext(AuthContext);
+
+  const emailInputRef = useRef();
+  const passwordInputRef = useRef();
+  const collegeInputRef = useRef();
 
   // Using useEffrct
   useEffect(() => {
@@ -57,29 +61,65 @@ const Login = () => {
     setPasswordIsValid(enteredPassword.trim().length > 6);
   };
 
-  const validateCollegeHandler=()=>{
-    setCollegeIsValid(enteredCollegeName.trim().length >=2);
-  }
+  const validateCollegeHandler = () => {
+    setCollegeIsValid(enteredCollegeName.trim().length >= 2);
+  };
 
   const submitHandler = (event) => {
     event.preventDefault();
-    ctxt.onLogin(enteredEmail, enteredPassword);
+    // Adding forward refconcept. want to cursor movement automatic
+    if (formIsValid) {
+      ctxt.onLogin(enteredEmail, enteredPassword);
+    } else if (!emailIsValid) {
+      emailInputRef.current.focus();
+    } else if (!passwordIsValid) {
+      passwordInputRef.current.focus();
+    } else {
+      collegeInputRef.current.focus();
+    }
   };
 
   return (
     <Card className={classes.login}>
       <form onSubmit={submitHandler}>
         {/* For Email */}
-        <Input type="email" label="E-Mail" id="Email" onChange={emailChangeHandler} onBlur={validateEmailHandler} value={enteredEmail} IsValid={emailIsValid}/>
+        <Input
+          ref={emailInputRef}
+          type="email"
+          label="E-Mail"
+          id="Email"
+          onChange={emailChangeHandler}
+          onBlur={validateEmailHandler}
+          value={enteredEmail}
+          IsValid={emailIsValid}
+        />
 
         {/* For Password */}
-        <Input type="password" label="Password" id="password" onChange={passwordChangeHandler} onBlur={validatePasswordHandler} value={enteredPassword} IsValid={passwordIsValid}/>
+        <Input
+          ref={passwordInputRef}
+          type="password"
+          label="Password"
+          id="password"
+          onChange={passwordChangeHandler}
+          onBlur={validatePasswordHandler}
+          value={enteredPassword}
+          IsValid={passwordIsValid}
+        />
 
         {/* For College */}
-        <Input type="text" label="College Name" id="college" onChange={collegeNameHandler} onBlur={validateCollegeHandler} value={enteredCollegeName} IsValid={collegeIsValid}/>
+        <Input
+          ref={collegeInputRef}
+          type="text"
+          label="College Name"
+          id="college"
+          onChange={collegeNameHandler}
+          onBlur={validateCollegeHandler}
+          value={enteredCollegeName}
+          IsValid={collegeIsValid}
+        />
 
         <div className={classes.actions}>
-          <Button type="submit" className={classes.btn} disabled={!formIsValid}>
+          <Button type="submit" className={classes.btn}>
             Login
           </Button>
         </div>

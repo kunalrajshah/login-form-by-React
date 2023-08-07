@@ -1,13 +1,13 @@
-import {createContext,useState,useEffect} from "react";
+import { createContext, useState, useEffect } from "react";
 
-const AuthContext=createContext({
+const AuthContext = createContext({
   // These all are dummy data. u can leave this also
   isLogedIn: false,
-  onLogout:()=>{},
-  onLogin:(email,password)=>{}
+  onLogout: () => {},
+  onLogin: (email, password) => {},
 });
 
-export const AuthContextProvider=(props)=>{
+export const AuthContextProvider = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // we want it run only once during reloading the page.so we give empty[] dependency.
@@ -33,15 +33,15 @@ export const AuthContextProvider=(props)=>{
 
   return (
     <AuthContext.Provider
-    value={{
-      isLogedIn: isLoggedIn,
-      onLogout:logoutHandler,
-      onLogin:loginHandler
-    }}
-  >
-    {props.children}
-  </AuthContext.Provider>
+      value={{
+        isLogedIn: isLoggedIn,
+        onLogout: logoutHandler,
+        onLogin: loginHandler,
+      }}
+    >
+      {props.children}
+    </AuthContext.Provider>
   );
-}
+};
 
 export default AuthContext;

@@ -6,7 +6,7 @@ import MainHeader from "./components/MainHeader/MainHeader";
 import AuthContext from "./store/auth-context";
 
 function App() {
-  const ctxt=useContext(AuthContext);
+  const ctxt = useContext(AuthContext);
   return (
     <>
       <MainHeader />
